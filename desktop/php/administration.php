@@ -42,9 +42,15 @@ sendVarToJS('ldapEnable', config::byKey('ldap::enable'));
                                     <input type="text" class="configKey form-control" data-l1key="backup::keepDays" />
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label">Envoyer les sauvegardes dans le cloud</label>
+                                <div class="col-lg-4">
+                                    <input type="checkbox" class="configKey form-control" data-l1key="backup::cloudUpload" />
+                                </div>
+                            </div>
                         </fieldset>
                     </form>
-                    <legend>Sauvegardes</legend>
+                    <legend>Sauvegardes locale</legend>
                     <form class="form-horizontal">
                         <fieldset>
                             <div class="form-group">
@@ -54,7 +60,6 @@ sendVarToJS('ldapEnable', config::byKey('ldap::enable'));
 
                                     </select>
                                 </div>
-
                             </div>
                             <div class="form-group">
                                 <label class="col-lg-4 control-label">Restaurer la sauvegarde</label>
@@ -76,6 +81,42 @@ sendVarToJS('ldapEnable', config::byKey('ldap::enable'));
                             </div>
                         </fieldset>
                     </form>
+                    <?php if (config::byKey('market::apikey') != '') { ?>
+                        <legend>Sauvegardes cloud</legend>
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <?php
+                                try {
+                                    $listeCloudBackup = market::listeBackup();
+                                } catch (Exception $e) {
+                                    echo '<div class="alert alert-danger">' . $e->getMessage() . '</div>';
+                                }
+                                ?>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">Sauvegardes disponibles</label>
+                                    <div class="col-lg-4">
+                                        <select class="form-control" id="sel_restoreCloudBackup">
+                                            <?php
+                                            try {
+                                                foreach ($listeCloudBackup as $backup) {
+                                                    echo '<option>' . $backup . '</option>';
+                                                }
+                                            } catch (Exception $e) {
+                                                
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">Restaurer la sauvegarde</label>
+                                    <div class="col-lg-4">
+                                        <a class="btn btn-warning" id="bt_restoreCloudJeedom"><i class="fa fa-refresh fa-spin" style="display : none;"></i> <i class="fa fa-file"></i> Restaurer</a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    <?php } ?>
                 </div>
 
                 <div class="col-lg-6">

@@ -224,9 +224,11 @@ class jeedom {
             cache::set('jeedom::startOK', 1, 0);
             cache::restore();
             plugin::start();
+            log::add('core', 'info', 'Démarrage de Jeedom OK');
         }
         $c = new Cron\CronExpression(config::byKey('persist::cron'), new Cron\FieldFactory);
         if ($c->isDue()) {
+            log::add('core', 'debug', 'Persistance du cache');
             cache::persist();
         }
     }
@@ -252,8 +254,6 @@ class jeedom {
         $cache = cache::byKey('jeedom::hwkey');
         if ($cache->getValue(0) == 0) {
             $key = exec('cat /proc/cpuinfo');
-            $key .= exec('dmidecode');
-            $key .= exec('lspci');
             $key .= exec("ifconfig eth0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'");
             $hwkey = sha1($key);
             cache::set('jeedom::hwkey', $hwkey, 86400);
