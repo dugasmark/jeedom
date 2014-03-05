@@ -17,6 +17,27 @@ if (!isConnect()) {
         -moz-border-radius: 4px;
         border-radius: 4px;
     }
+
+    .item .selectpicker {
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+    }
+
+    .row .col-inner {
+        margin-top:15px;
+        margin-bottom:15px;
+        height:250px;
+    }
+
+
+    .viewData{
+        display:inline-block;
+    }
+
+    #div_viewZones {
+        overflow: hidden;
+    }
+
 </style>
 
 <div class="row">
@@ -39,7 +60,7 @@ if (!isConnect()) {
     <div class="col-lg-10">
         <legend style="height: 35px;">Vue<a class="btn btn-default btn-xs pull-right" id="bt_addviewZone"><i class="fa fa-plus-circle"></i> Ajouter viewZone</a></legend>
 
-        <div id="div_viewZones" style="margin-top: 10px;"></div>
+        <div id="div_viewZones" class="row" style="margin-top: 10px;"></div>
 
 
         <div class="form-actions" style="margin-top: 10px;">

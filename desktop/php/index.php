@@ -56,6 +56,7 @@ if ($plugin != '') {
         include_file('core', 'core', 'css');
         include_file('3rdparty', 'jquery.gritter/jquery.gritter', 'css');
         include_file('3rdparty', 'jquery.ui/jquery-ui-bootstrap/jquery-ui', 'css');
+        include_file('3rdparty', 'bootstrap-select/bootstrap-select.min', 'css');
         if (config::byKey('enableChat') == 1 && config::byKey('enableNodeJs') == 1) {
             include_file('3rdparty', 'jquery.chatjs/jquery.chatjs', 'css');
         }
@@ -231,6 +232,7 @@ if ($plugin != '') {
             include_file('3rdparty', 'highstock/highcharts-more', 'js');
             include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.min', 'js');
             include_file('3rdparty', 'jquery.tablesorter/jquery.tablesorter.widgets.min', 'js');
+            include_file('3rdparty', 'bootstrap-select/bootstrap-select.min', 'js');
             include_file('desktop', 'utils', 'js');
             include_file('3rdparty', 'jquery.gritter/jquery.gritter.min', 'js');
             if (config::byKey('enableChat') == 1 && config::byKey('enableNodeJs') == 1) {

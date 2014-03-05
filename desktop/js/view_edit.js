@@ -16,6 +16,28 @@
  */
 
 $(function() {
+
+    var $viewZones = $('#div_viewZones');
+    var device = 'col-sm-';
+
+    $viewZones.on('change','.changesize',function(e) {
+        var size = $(this).find("option:selected").val();
+        var $target = $(this).parents('.col-inner').parent();
+        var classMatch = $target.attr('class').match(new RegExp(device+"(\\d+)",'g'));
+        $target.switchClass(classMatch[0],device+size,500,'linear');
+    });
+
+    // Initialisation du trie des items
+    $viewZones.sortable({
+        placeholder: "selected",
+        tolerance: "pointer",
+        start: function( event, ui ) {
+            ui.placeholder
+                .addClass(ui.item.attr('class'))
+                .append('<div class="col-inner panel panel-default"></div>');
+        }
+    });
+
     $("#md_addViewData").dialog({
         autoOpen: false,
         modal: true,
@@ -80,7 +102,7 @@ $(function() {
         $('#ul_view .li_view:first').click();
     }
 
-    $("#div_viewZones").sortable({axis: "y", cursor: "move", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
+    //$("#div_viewZones").sortable({axis: "y", cursor: "move", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 
     $('.enable').on('click', function() {
         var selectTr = $(this).closest('tr');
@@ -286,14 +308,34 @@ function addEditviewZone(_viewZone) {
     }
     if (init(_viewZone.emplacement) == '') {
         var id = $('#div_viewZones .viewZone').length;
+        /*
         var div = '<div id="viewZone' + id + '" class="viewZone" data-toggle="tab">';
         div += '<legend style="height: 35px;"><span class="viewZoneAttr" data-l1key="name">' + init(_viewZone.name) + '</span>';
         div += '<a class="btn btn-danger btn-xs pull-right bt_removeviewZone"><i class="fa fa-trash-o"></i> Supprimer</a>';
         div += ' <a class="btn btn-warning btn-xs pull-right bt_editviewZone"><i class="fa fa-pencil"></i> Editer</a>';
         div += '<a class="btn btn-primary btn-xs pull-right bt_addViewData"><i class="fa fa-plus-circle"></i> Ajouter/Editer ' + init(_viewZone.type, 'widget') + '</a>';
+        */
+        var div = '<div class="item col-sm-4">';
+        div += '<div class="col-inner panel panel-default">';
+        div += '<div class="panel-heading">';
+        div += '<div class="input-group">';
+        div += '<span class="input-group-addon">Taille</span>';
+        div += '<select class="changesize selectpicker show-tick"><option value="4">Petit</option><option value="8">Moyen</option><option value="12">Grand</option></select>';
+        div += '<button class="remove-item btn btn-default pull-right"><span class="glyphicon glyphicon-remove"></span></button>';
+        div += '</div>';
+        div += '</div>';
+        div += '<div class="panel-body">';
+        
+
+        div += '<div id="viewZone' + id + '" class="viewZone" data-toggle="tab">';
+        div += '<legend style="height: 35px;"><span class="viewZoneAttr" data-l1key="name">' + init(_viewZone.name) + '</span>';
+        div += '<a class="btn btn-danger btn-xs pull-right bt_removeviewZone"><i class="fa fa-trash-o"></i> Supprimer</a>';
+        div += ' <a class="btn btn-warning btn-xs pull-right bt_editviewZone"><i class="fa fa-pencil"></i> Editer</a>';
+        div += '<a class="btn btn-primary btn-xs pull-right bt_addViewData"><i class="fa fa-plus-circle"></i> Ajouter/Editer ' + init(_viewZone.type, 'widget') + '</a>';
+        div += '</legend>';
 
         if (init(_viewZone.type, 'widget') == 'graph') {
-            div += '<select class="pull-right viewZoneAttr form-control input-sm" data-l1key="configuration" data-l2key="dateRange" style="width : 200px;">';
+            div += '<select class="viewZoneAttr form-control input-sm" data-l1key="configuration" data-l2key="dateRange" style="width : 200px;">';
             if (init(_viewZone.configuration.dateRange) == "30 min") {
                 div += '<option value="30 min" selected>30min</option>';
             } else {
@@ -327,12 +369,25 @@ function addEditviewZone(_viewZone) {
             div += '</select>';
         }
 
+        
+        div += '<input style="display : none;" class="viewZoneAttr" data-l1key="type" value="' + init(_viewZone.type) + '">';
+        div += '<div class="div_viewData"></div>';
+        div += '</div>';
+
+        /*
         div += '</legend>';
         div += '<input style="display : none;" class="viewZoneAttr" data-l1key="type" value="' + init(_viewZone.type) + '">';
         div += '<div class="div_viewData"></div>';
         div += '</div>';
-        $('#div_viewZones').append(div);
-        $('#viewZone' + id + ' .div_viewData').sortable({axis: "x", cursor: "move", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
+        */
+        div += '</div>';
+        div += '</div>';
+        div += '</div>';
+
+        var $div = $(div);
+        $div.find('.selectpicker').selectpicker();
+        $('#div_viewZones').append($div);
+        //$('#viewZone' + id + ' .div_viewData').sortable({axis: "x", cursor: "move", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
     } else {
         $('#' + _viewZone.emplacement).find('.viewZoneAttr[data-l1key=name]').text(_viewZone.name);
     }
